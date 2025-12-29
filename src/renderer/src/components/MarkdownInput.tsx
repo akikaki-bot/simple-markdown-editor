@@ -1,5 +1,9 @@
 import React from 'react'
 
+import { useAtom, useAtomValue } from 'jotai'
+import { markdownAtom, tmpMarkdownAtom } from '@renderer/atoms/markdownAtoms'
+import { selectedIdAtom } from '@renderer/atoms/selectedIdAtom'
+
 export function MarkdownInput({
 	onChange,
 	defaultValue,
@@ -9,8 +13,23 @@ export function MarkdownInput({
 	onChange: (value: string) => void
 	defaultValue?: string
 }): React.JSX.Element {
+	const selectedId = useAtomValue(selectedIdAtom);
+	const tmpContent = useAtomValue(tmpMarkdownAtom);
+	const [content, setContent] = useAtom(markdownAtom);
+
+	const saveContent = () => {
+		const updatedContent = content.map((item) =>
+			item.id === selectedId ? { ...item, content: tmpContent } : item
+		);
+		setContent(updatedContent);
+	};
+
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
 		onChange(event.target.value)
+	};
+
+	const handleOnTargetChange = () => {
+		saveContent();
 	}
 
 	const inputValue = React.useMemo(() => {
@@ -24,6 +43,7 @@ export function MarkdownInput({
 			className="w-full h-full p-4 border border-gray-300 rounded-md focus:outline-none"
 			placeholder="Enter your markdown here..."
 			onChange={handleChange}
+			onBlur={handleOnTargetChange}
 		/>
 	)
 }
