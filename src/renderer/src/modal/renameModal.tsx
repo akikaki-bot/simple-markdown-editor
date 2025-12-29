@@ -1,11 +1,11 @@
-import { useAtom, useAtomValue } from "jotai";
-import React from "react";
+import { useAtom, useAtomValue } from 'jotai'
+import React from 'react'
 
-import { targetIdAtom } from "@renderer/atoms/selectedIdAtom";
-import { modalShownAtom } from "@renderer/atoms/modalShownAtom";
-import { markdownAtom } from "@renderer/atoms/markdownAtoms";
+import { targetIdAtom } from '@renderer/atoms/selectedIdAtom'
+import { modalShownAtom } from '@renderer/atoms/modalShownAtom'
+import { markdownAtom } from '@renderer/atoms/markdownAtoms'
 
-import { Button } from "@renderer/components/ui/button"
+import { Button } from '@renderer/components/ui/button'
 import {
 	Dialog,
 	DialogClose,
@@ -14,52 +14,53 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from "@renderer/components/ui/dialog"
-import { Input } from "@renderer/components/ui/input"
+} from '@renderer/components/ui/dialog'
+import { Input } from '@renderer/components/ui/input'
 
 export function RenameModal(): React.JSX.Element {
+	const targetDocId = useAtomValue(targetIdAtom)
 
-	const targetDocId = useAtomValue(targetIdAtom);
+	const [content, setContent] = useAtom(markdownAtom)
+	const [modalId, setModalShown] = useAtom(modalShownAtom)
 
-	const [content, setContent] = useAtom(markdownAtom);
-	const [modalId, setModalShown] = useAtom(modalShownAtom);
+	const [newId, setNewId] = React.useState<string>(targetDocId || '')
 
-	const [newId, setNewId] = React.useState<string>(targetDocId || "");
-
-	const renameDocument = () => {
-
+	const renameDocument = (): void => {
 		if (targetDocId === newId) {
-			setModalShown(null);
-			return;
+			setModalShown(null)
+			return
 		}
 
-		if (
-			!newId ||
-			newId === targetDocId ||
-			content.find((item) => item.id === newId)
-		) {
-			alert("Invalid or duplicate document ID!");
-			return;
+		if (!newId || newId === targetDocId || content.find((item) => item.id === newId)) {
+			alert('Invalid or duplicate document ID!')
+			return
 		}
 
 		const updatedContent = content.map((item) =>
 			item.id === targetDocId ? { ...item, id: newId } : item
-		);
-		setContent(updatedContent);
-		setModalShown(null);
+		)
+		setContent(updatedContent)
+		setModalShown(null)
 	}
 
 	React.useEffect(() => {
-		setNewId(targetDocId || "");
-	}, [targetDocId]);
+		setNewId(targetDocId || '')
+	}, [targetDocId])
 
 	return (
-		<Dialog open={modalId === "rename"} onOpenChange={(open) => { if (!open) setModalShown(null); }}>
+		<Dialog
+			open={modalId === 'rename'}
+			onOpenChange={(open) => {
+				if (!open) setModalShown(null)
+			}}
+		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Rename Document</DialogTitle>
 					<DialogDescription>
-						<label htmlFor="new-id" className="block mb-2">New Document ID:</label>
+						<label htmlFor="new-id" className="block mb-2">
+							New Document ID:
+						</label>
 						<Input
 							id="new-id"
 							type="text"
@@ -71,7 +72,9 @@ export function RenameModal(): React.JSX.Element {
 				</DialogHeader>
 				<DialogFooter>
 					<DialogClose asChild>
-						<Button variant="outline" onClick={() => setModalShown(null)}>Cancel</Button>
+						<Button variant="outline" onClick={() => setModalShown(null)}>
+							Cancel
+						</Button>
 					</DialogClose>
 					<Button onClick={() => renameDocument()}>Save</Button>
 				</DialogFooter>

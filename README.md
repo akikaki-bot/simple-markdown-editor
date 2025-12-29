@@ -7,10 +7,12 @@
 - Electron
 - Vite
 - React
+- Jotai
 
-### CSS Framework
+### CSS / UI Framework
 
 - TailwindCSS
+- shadcn/ui
 
 ## Run (dev)
 

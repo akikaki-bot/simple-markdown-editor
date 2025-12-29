@@ -1,8 +1,8 @@
+import { DeleteModal } from './deleteModal'
+import { RenameModal } from './renameModal'
+import React from 'react'
 
-import { DeleteModal } from "./deleteModal";
-import { RenameModal } from "./renameModal";
-
-export function Modals() {
+export function Modals(): React.JSX.Element {
 	return (
 		<>
 			<DeleteModal />

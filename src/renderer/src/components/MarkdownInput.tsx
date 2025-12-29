@@ -13,23 +13,23 @@ export function MarkdownInput({
 	onChange: (value: string) => void
 	defaultValue?: string
 }): React.JSX.Element {
-	const selectedId = useAtomValue(selectedIdAtom);
-	const tmpContent = useAtomValue(tmpMarkdownAtom);
-	const [content, setContent] = useAtom(markdownAtom);
+	const selectedId = useAtomValue(selectedIdAtom)
+	const tmpContent = useAtomValue(tmpMarkdownAtom)
+	const [content, setContent] = useAtom(markdownAtom)
 
-	const saveContent = () => {
+	const saveContent = (): void => {
 		const updatedContent = content.map((item) =>
 			item.id === selectedId ? { ...item, content: tmpContent } : item
-		);
-		setContent(updatedContent);
-	};
+		)
+		setContent(updatedContent)
+	}
 
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
 		onChange(event.target.value)
-	};
+	}
 
-	const handleOnTargetChange = () => {
-		saveContent();
+	const handleOnTargetChange = (): void => {
+		saveContent()
 	}
 
 	const inputValue = React.useMemo(() => {

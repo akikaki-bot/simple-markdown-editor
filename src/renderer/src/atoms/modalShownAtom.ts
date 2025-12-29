@@ -1,6 +1,5 @@
-import { atom } from "jotai";
+import { atom } from 'jotai'
 
-export type DisplayModals = "rename" | "delete" | "export";
+export type DisplayModals = 'rename' | 'delete' | 'export'
 
-export const modalShownAtom = atom<DisplayModals | null>(null);
-
+export const modalShownAtom = atom<DisplayModals | null>(null)

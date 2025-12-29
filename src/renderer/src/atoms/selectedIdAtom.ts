@@ -1,5 +1,5 @@
-import { atom } from 'jotai';
+import { atom } from 'jotai'
 
-export const selectedIdAtom = atom<string>('default');
+export const selectedIdAtom = atom<string>('default')
 
-export const targetIdAtom = atom<string | null>(null);
+export const targetIdAtom = atom<string | null>(null)
