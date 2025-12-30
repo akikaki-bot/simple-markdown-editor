@@ -24,12 +24,17 @@ export function MarkdownInput({
 		setContent(updatedContent)
 	}
 
+	const saveGlobalStore = (): void => {
+		window.electron.ipcRenderer.send('savesmed', JSON.stringify(content))
+	}
+
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
 		onChange(event.target.value)
 	}
 
 	const handleOnTargetChange = (): void => {
 		saveContent()
+		saveGlobalStore()
 	}
 
 	const inputValue = React.useMemo(() => {

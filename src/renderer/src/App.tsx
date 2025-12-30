@@ -1,13 +1,13 @@
 import { MarkdownInput } from './components/MarkdownInput'
 import { MarkdownPreview } from './components/MarkdownPreview'
-import { markdownAtom, tmpMarkdownAtom } from './atoms/markdownAtoms'
+import { markdownAtom, tmpMarkdownAtom, MarkdownState } from './atoms/markdownAtoms'
 import { selectedIdAtom } from './atoms/selectedIdAtom'
 
 import { useAtom, useAtomValue } from 'jotai'
 import React from 'react'
 
 export default function App(): React.JSX.Element {
-	const content = useAtomValue(markdownAtom)
+	const [content, setGlobalContent] = useAtom(markdownAtom)
 	const selectedId = useAtomValue(selectedIdAtom)
 
 	const [tmpContent, setTmpContent] = useAtom(tmpMarkdownAtom)
@@ -20,6 +20,12 @@ export default function App(): React.JSX.Element {
 	React.useEffect(() => {
 		setTmpContent(getDocumentContent(selectedId))
 	}, [selectedId])
+
+	React.useEffect(() => {
+		window.electronAPI.onLoadSmedData((data: MarkdownState[]) => {
+			setGlobalContent(data)
+		})
+	}, [])
 
 	return (
 		<div className="flex flex-row justify-center gap-4 h-[91%] max-h-svh px-2">

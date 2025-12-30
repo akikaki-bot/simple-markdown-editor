@@ -2,6 +2,15 @@
 
 とんでもなくシンプルなマークダウンエディター
 
+# Features
+
+- Markdown Writing / Preview
+- .md .mdx File Open / Export
+- State Import / Export (`.smed`)
+- AutoSave to User AppData Directory (`.dsmed`)
+- Cross Platform (Windows, MacOS, Linux)
+- Lightweight and Fast
+
 ## Stacks
 
 - Electron
@@ -14,6 +23,15 @@
 - TailwindCSS
 - shadcn/ui
 
+# Development
+
+## Install
+
+```
+npm install
+
+```
+
 ## Run (dev)
 
 ```
@@ -23,12 +41,12 @@ npm run dev
 ## lint or format
 
 ```
-npm run format
-npm run lint
+npm run check
 ```
 
 ## build
 
 ```
 npm run build
+npm run build:[os]
 ```

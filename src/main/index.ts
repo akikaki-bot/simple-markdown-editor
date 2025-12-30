@@ -1,7 +1,41 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import fs from 'fs'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+
+interface MarkdownState {
+	content: string
+	id: string
+}
+
+function getSmedData(): MarkdownState[] {
+	const saveFilePath = app.getPath('appData') + '/simple-markdown-editor-data/data.dsmed'
+	try {
+		if (fs.existsSync(saveFilePath)) {
+			const data = fs.readFileSync(saveFilePath, 'utf-8')
+			return JSON.parse(data) as MarkdownState[]
+		} else {
+			return [
+				{
+					id: 'helloworld',
+					content:
+						'# Welcome to the Markdown Editor\n\nThis is a simple markdown editor built with React and Jotai.\n\n- Type your markdown in the left pane.\n- See the rendered HTML in the right pane.\n\nEnjoy!'
+				}
+			]
+		}
+	} catch (err) {
+		console.error('Error reading .smed file:', err)
+		fs.copyFileSync(saveFilePath, saveFilePath + `.backup-${Date.now()}.dsmed`)
+		console.log('[Log] Corrupted data backed up.')
+		return [
+			{
+				id: 'error',
+				content: `# Error\n\nThere was an error loading your saved data. \n\n ## Reason \n\n \`\`\`\n\n ${err}\n\n\`\`\`\n\n ## Tips: \n\n A backup of the corrupted data has been created. You can try re-importing it manually.`
+			}
+		]
+	}
+}
 
 function createWindow(): void {
 	// Create the browser window.
@@ -18,6 +52,7 @@ function createWindow(): void {
 	})
 
 	mainWindow.on('ready-to-show', () => {
+		mainWindow.webContents.send('load-smed-data', getSmedData())
 		mainWindow.show()
 	})
 
@@ -51,6 +86,15 @@ app.whenReady().then(() => {
 
 	// IPC test
 	ipcMain.on('ping', () => console.log('pong'))
+
+	ipcMain.on('savesmed', (_event, data: string) => {
+		const saveFilePath = app.getPath('appData') + '/simple-markdown-editor-data'
+		if (!fs.existsSync(saveFilePath)) {
+			fs.mkdirSync(saveFilePath, { recursive: true })
+		}
+		fs.writeFileSync(saveFilePath + '/data.dsmed', data, 'utf-8')
+		console.log('[Log] Data saved to', saveFilePath + '/data.dsmed')
+	})
 
 	createWindow()
 

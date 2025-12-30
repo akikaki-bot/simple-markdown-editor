@@ -52,6 +52,10 @@ export function AppSidebar(): React.JSX.Element {
 		setContent(updatedContent)
 	}
 
+	const saveGlobalStore = (): void => {
+		window.electron.ipcRenderer.send('savesmed', JSON.stringify(content))
+	}
+
 	const createNewDocument = (): void => {
 		const newId = `doc-${content.length + 1}`
 		setContent([...content, { id: newId, content: '' }])
@@ -78,6 +82,7 @@ export function AppSidebar(): React.JSX.Element {
 
 	const onDocumentListChange = (): void => {
 		saveContent()
+		saveGlobalStore()
 		const doc = content.find((item) => item.id === selectedId)
 		if (doc) {
 			setTmpContent(doc.content)
