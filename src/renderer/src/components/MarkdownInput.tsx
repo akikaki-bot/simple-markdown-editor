@@ -40,7 +40,7 @@ export function MarkdownInput({
 		<textarea
 			value={inputValue}
 			defaultValue={defaultValue}
-			className="w-full h-full p-4 border border-gray-300 rounded-md focus:outline-none"
+			className="w-full h-full max-h-full p-4 border border-gray-300 rounded-md focus:outline-none resize-none"
 			placeholder="Enter your markdown here..."
 			onChange={handleChange}
 			onBlur={handleOnTargetChange}

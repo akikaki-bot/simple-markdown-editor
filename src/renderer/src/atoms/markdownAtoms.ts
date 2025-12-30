@@ -7,7 +7,7 @@ export interface MarkdownState {
 
 export const markdownAtom = atom<MarkdownState[]>([
 	{
-		id: 'default',
+		id: 'helloworld',
 		content:
 			'# Welcome to the Markdown Editor\n\nThis is a simple markdown editor built with React and Jotai.\n\n- Type your markdown in the left pane.\n- See the rendered HTML in the right pane.\n\nEnjoy!'
 	}

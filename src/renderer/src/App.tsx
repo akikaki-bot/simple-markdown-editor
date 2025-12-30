@@ -22,7 +22,7 @@ export default function App(): React.JSX.Element {
 	}, [selectedId])
 
 	return (
-		<div className="flex flex-col sm:flex-row  justify-center h-screen gap-4 px-2 py-4">
+		<div className="flex flex-row justify-center gap-4 h-[91%] max-h-svh px-2">
 			<div className="flex flex-col w-full">
 				<MarkdownInput
 					onChange={(value) => setTmpContent(value)}

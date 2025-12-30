@@ -5,7 +5,11 @@ import remarkBreaks from 'remark-breaks'
 import rehypeStringify from 'rehype-stringify'
 import remarkRehype from 'remark-rehype'
 
+import { previewToggleAtom } from '@renderer/atoms/previewToggleAtom'
+import { useAtomValue } from 'jotai'
+
 export function MarkdownPreview({ content }: { content: string }): React.JSX.Element {
+	const isHidden = useAtomValue(previewToggleAtom)
 	const markdownContent = useMemo(() => content, [content])
 	const [markdown, setMarkdown] = React.useState<string>('')
 	const markdownProcess = async (markdownContent: string): Promise<string> => {
@@ -27,8 +31,14 @@ export function MarkdownPreview({ content }: { content: string }): React.JSX.Ele
 
 	return (
 		<div
-			className="w-full h-full p-4 border border-gray-300 rounded-md overflow-auto prose"
+			className="w-full p-4 border max-h-full h-full border-gray-300 rounded-md overflow-auto prose transition-transform transform-gpu"
 			dangerouslySetInnerHTML={{ __html: markdown }}
+			style={{
+				scale: isHidden ? 0 : 1,
+				transformOrigin: 'right',
+				transition: 'scale 0.3s ease',
+				display: isHidden ? 'none' : 'block'
+			}}
 		/>
 	)
 }

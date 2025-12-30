@@ -17,6 +17,7 @@ import {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarGroupContent,
+	SidebarMenu,
 	SidebarMenuItem,
 	SidebarMenuButton,
 	SidebarFooter,
@@ -153,14 +154,17 @@ export function AppSidebar(): React.JSX.Element {
 	}
 
 	return (
-		<Sidebar>
+		<Sidebar collapsible="offcanvas">
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel> Created Markdown Documents </SidebarGroupLabel>
 					<SidebarGroupContent>
 						{content.map((doc) => (
 							<SidebarMenuItem key={doc.id} onClick={onDocumentListChange}>
-								<SidebarMenuButton onClick={() => setDocumentId(doc.id!)}>
+								<SidebarMenuButton
+									onClick={() => setDocumentId(doc.id!)}
+									isActive={selectedId === doc.id}
+								>
 									<span>{doc.id || 'Untitled Document'}</span>
 								</SidebarMenuButton>
 								<DropdownMenu>
@@ -195,32 +199,56 @@ export function AppSidebar(): React.JSX.Element {
 			<SidebarFooter>
 				<SidebarGroup>
 					<SidebarGroupLabel> Add / Import Documents </SidebarGroupLabel>
-					<SidebarMenuButton onClick={createNewDocument}>
-						<Plus />
-						New Document
-					</SidebarMenuButton>
-					<input
-						type="file"
-						accept=".md, .markdown, text/markdown"
-						style={{ display: 'none' }}
-						id="__markdown_import_anchor__"
-						onChange={fileInputEvent}
-					/>
-					<SidebarMenuButton onClick={importButtonClick}>
-						<ArrowUp />
-						Import Document
-					</SidebarMenuButton>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem key={'new_document'}>
+								<SidebarMenuButton onClick={createNewDocument} asChild>
+									<a href="#">
+										<Plus />
+										<span>New Document</span>
+									</a>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<input
+								type="file"
+								accept=".md, .markdown, .mdx, text/markdown"
+								style={{ display: 'none' }}
+								id="__markdown_import_anchor__"
+								onChange={fileInputEvent}
+							/>
+							<SidebarMenuItem key={'import_markdown'}>
+								<SidebarMenuButton onClick={importButtonClick} asChild>
+									<a href="#">
+										<ArrowUp />
+										<span>Import Markdown File</span>
+									</a>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
 				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupLabel> Export / Import States </SidebarGroupLabel>
-					<SidebarMenuButton onClick={exportMarkdownState}>
-						<FolderUp />
-						Export Editor State
-					</SidebarMenuButton>
-					<SidebarMenuButton onClick={importMarkdownState}>
-						<FolderDown />
-						Import Editor State
-					</SidebarMenuButton>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem key={'export_state'}>
+								<SidebarMenuButton onClick={exportMarkdownState} asChild>
+									<a href="#">
+										<FolderUp />
+										<span>Export Editor State</span>
+									</a>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem key={'import_state'}>
+								<SidebarMenuButton onClick={importMarkdownState} asChild>
+									<a href="#">
+										<FolderDown />
+										<span>Import Editor State</span>
+									</a>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarFooter>
 		</Sidebar>
