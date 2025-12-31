@@ -6,12 +6,12 @@ import { selectedIdAtom } from '@renderer/atoms/selectedIdAtom'
 
 export function MarkdownInput({
 	onChange,
-	defaultValue,
+	//_defaultValue,
 	value
 }: {
 	value?: string
 	onChange: (value: string) => void
-	defaultValue?: string
+	//_defaultValue?: string
 }): React.JSX.Element {
 	const selectedId = useAtomValue(selectedIdAtom)
 	const tmpContent = useAtomValue(tmpMarkdownAtom)
@@ -44,7 +44,7 @@ export function MarkdownInput({
 	return (
 		<textarea
 			value={inputValue}
-			defaultValue={defaultValue}
+			//defaultValue={defaultValue}
 			className="w-full h-full max-h-full p-4 border border-gray-300 rounded-md focus:outline-none resize-none"
 			placeholder="Enter your markdown here..."
 			onChange={handleChange}

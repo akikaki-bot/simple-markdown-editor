@@ -4,6 +4,7 @@ import remarkParse from 'remark-parse'
 import remarkBreaks from 'remark-breaks'
 import rehypeStringify from 'rehype-stringify'
 import remarkRehype from 'remark-rehype'
+import rehypePrettyCode from 'rehype-pretty-code'
 
 import { previewToggleAtom } from '@renderer/atoms/previewToggleAtom'
 import { useAtomValue } from 'jotai'
@@ -17,6 +18,9 @@ export function MarkdownPreview({ content }: { content: string }): React.JSX.Ele
 			.use(remarkParse)
 			.use(remarkBreaks)
 			.use(remarkRehype)
+			.use(rehypePrettyCode, {
+				theme: 'one-dark-pro'
+			})
 			.use(rehypeStringify)
 			.process(markdownContent)
 

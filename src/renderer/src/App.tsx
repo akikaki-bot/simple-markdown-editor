@@ -32,7 +32,7 @@ export default function App(): React.JSX.Element {
 			<div className="flex flex-col w-full">
 				<MarkdownInput
 					onChange={(value) => setTmpContent(value)}
-					defaultValue={tmpContent}
+					//defaultValue={tmpContent}
 					value={tmpContent}
 				/>
 			</div>
